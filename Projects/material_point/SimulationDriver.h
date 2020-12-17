@@ -67,7 +67,7 @@ public:
     /* run Euler step like project 1 */
     void run(const int max_frame)
     {
-        for (int frame = 1; frame < max_frame; frame++)
+        for (int frame = 1; frame <= max_frame; frame++)
         {
             std::cout << "Frame " << frame << std::endl;
             int N_substeps = (int)(((T)1 / 24) / dt);

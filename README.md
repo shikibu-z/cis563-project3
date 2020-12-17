@@ -1,11 +1,19 @@
 # CIS 563 Project 3 - Material Point Method
-**This project requries specific CMake environment from [CISPBA](https://github.com/cffjiang/cispba).**
+**This project requries specific a C++ environment from [CISPBA](https://github.com/cffjiang/cispba)**
+```
+sudo apt install libsuitesparse-dev libxcursor-dev libxinerama-dev libopenblas-dev
+sudo apt install make cmake g++ libeigen3-dev gfortran libmetis-dev libopenvdb-dev
+sudo apt install libboost-all-dev libilmbase-dev libopenexr-dev libtbb2 libtbb-dev
+sudo apt install libz-dev clang-format-6.0 xorg-dev libglu1-mesa-dev
+```
+**Make sure to check the above commands for required software packages.**
 ```
 cis-563-project3
+├── cis563-project3.patch
 ├── CMake
+│   ├── DownloadProject.cmake
 │   ├── DownloadProject.CMakeLists.cmake.in
 │   ├── DownloadProject.LICENSE
-│   ├── DownloadProject.cmake
 │   ├── FindCapnProto.cmake
 │   ├── FindEigen3.cmake
 │   ├── FindHalf.cmake
@@ -24,32 +32,33 @@ cis-563-project3
 │   ├── CMakeLists.txt
 │   └── material_point
 │       ├── CMakeLists.txt
-│       ├── SimulationDriver.h
 │       ├── data
 │       │   └── cube.obj
 │       ├── main.cpp
 │       ├── material_point.h
-│       └── mesh_query0.1
-│           ├── Makefile
-│           ├── README
-│           ├── bounding_box.h
-│           ├── bounding_box_tree.cpp
-│           ├── bounding_box_tree.h
-│           ├── mesh_query.cpp
-│           ├── mesh_query.h
-│           ├── predicates.cpp
-│           ├── predicates.h
-│           ├── util.h
-│           └── vec.h
+│       ├── mesh_query0.1
+│       │   ├── bounding_box.h
+│       │   ├── bounding_box_tree.cpp
+│       │   ├── bounding_box_tree.h
+│       │   ├── Makefile
+│       │   ├── mesh_query.cpp
+│       │   ├── mesh_query.h
+│       │   ├── predicates.cpp
+│       │   ├── predicates.h
+│       │   ├── README
+│       │   ├── util.h
+│       │   └── vec.h
+│       └── SimulationDriver.h
 ├── README.md
-├── Scripts
-│   ├── Makefile.in
-│   └── valgrind.supp
-├── cube.mov
-└── report.pdf
+├── report.pdf
+└── Scripts
+    ├── Makefile.in
+    └── valgrind.supp
+
 ```
 + Please make sure you are at C++ 11 or above.
-+ This project requrie `Eigen` and `Partio` library.
-+ Detailed code layout and explainations could be found at `/report.pdf`.
++ This project requries mainly `Eigen` and `Partio` library.
++ Detailed code layout and explainations could be found at `report.pdf`.
 + Type `make` at the top level directory will compile. 
-+ Type `./material_point` at `/Project/material_point/` will run the simulation.
++ Type `./material_point` at `/Projects/material_point/` will run the simulation, `.bgeo` outputs could be found at `Projects/material_point/output/`.
++ Based on different operating systems and setups, some source files might needed to be changed. Please refer to the `cis563-project3.patch` file for more information. Patching this file will enable correct compilation from `macOS 10.15.7` to `Ubuntu 20.04`. **If you are already setup correctly following the above instruction on a Linux machine, you don't need to worry about this file. This directory is already patched for you**.

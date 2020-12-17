@@ -44,7 +44,7 @@ void read_obj(std::vector<std::vector<float>> &vertices, std::vector<std::vector
     }
 }
 
-int main(__unused int argc, __unused char *argv[])
+int main()
 {
     using T = float;
     constexpr int dim = 3;

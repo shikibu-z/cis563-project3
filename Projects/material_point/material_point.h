@@ -2,7 +2,7 @@
 #include <vector>
 #include <Eigen/Core>
 #include <Eigen/Dense>
-#include <Eigen/sparse>
+#include <Eigen/Sparse>
 
 template <class T, int dim>
 class material_point
