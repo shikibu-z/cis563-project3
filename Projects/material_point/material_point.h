@@ -56,33 +56,6 @@ public:
         point_deform_grad = std::vector<TM>(point_number, TM::Identity());
     }
 
-    /* The polar svd implementation */
-    void polar_svd(TM &u, TM &v, TM &deform_grad)
-    {
-        /* svd decomposition (ignore sigma, never used) */
-        Eigen::JacobiSVD<TM> svd_decomp(deform_grad, Eigen::ComputeThinU | Eigen::ComputeThinV);
-        u = svd_decomp.matrixU();
-        v = svd_decomp.matrixV();
-
-        /* polar changes */
-        if (u.determinant() < 0)
-            u.col(2) = -u.col(2);
-
-        if (v.determinant() < 0)
-            v.col(2) = -v.col(2);
-    }
-
-    /* Computing the kirchoff stress by differentiating Psi */
-    void kirchoff_fixed_corotate(TM &stress, TM &deform_grad)
-    {
-        TM u, v;
-        polar_svd(u, v, deform_grad);
-        TM rotate = u * v.transpose();
-        T jacobi = deform_grad.determinant();
-        stress =
-            T(2) * mu * (deform_grad - rotate) + lambda * (jacobi - 1) * jacobi * deform_grad.inverse().transpose();
-    }
-
     /* Compute the interpolation weight */
     void inter_weight(TM &w, TM &dw, TV &base, TV &x)
     {
@@ -114,8 +87,27 @@ public:
             TM stress, w, dw;
             TV base;
 
+            /* The polar svd implementation */
+            TM u, v;
+            Eigen::JacobiSVD<TM> svd_decomp(deform_grad, Eigen::ComputeThinU | Eigen::ComputeThinV);
+            u = svd_decomp.matrixU();
+            v = svd_decomp.matrixV();
+
+            /* polar changes */
+            if (u.determinant() < 0)
+                u.col(2) = -u.col(2);
+
+            if (v.determinant() < 0)
+                v.col(2) = -v.col(2);
+
             /* compute stress and weight */
-            kirchoff_fixed_corotate(stress, deform_grad);
+            TM rotate = u * v.transpose();
+            T jacobi = deform_grad.determinant();
+
+            /* Computing the kirchoff stress by differentiating Psi */
+            stress = T(2) * mu * (deform_grad - rotate) + lambda * (jacobi - 1) * jacobi *
+                                                              deform_grad.inverse().transpose();
+
             inter_weight(w, dw, base, x);
 
             /* iterate over the 27 related grid node */
